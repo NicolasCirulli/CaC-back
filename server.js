@@ -5,6 +5,8 @@ require('./config/db')
 
 const eventsRouter = require('./routes/eventsRouter')
 
+app.use( express.json() )
+
 app.get( '/', (req, res) => res.send('Api amazing events') )
 app.use( '/api', eventsRouter )
 
