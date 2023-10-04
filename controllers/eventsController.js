@@ -1,5 +1,3 @@
-const events = [ 'batman', 'aladin', 'korean food' ]
-
 const Events = require('../models/eventModel')
 
 const eventsController = {
@@ -11,10 +9,34 @@ const eventsController = {
             return res.status( 500 ).json({success:false})
         }
     },
+    getEvent: async(req, res) => {
+        try {
+            const event = await Events.findById(req.params.id)
+            return res.status(200).json( {success:true, event:event} )
+        } catch (error) {
+            return res.status( 500 ).json({success:false})
+        }
+    },
     addEvent: async(req, res) => { 
         try {
             const newEvent = await Events.create(req.body)
             return res.status(201).json( { success:true, event: newEvent } )
+        } catch (error) {
+            return res.status( 500 ).json({success:false})
+        }
+    },
+    updateEvent: async( req, res ) => {
+        try {
+           const event = await Events.findOneAndUpdate( { _id:req.params.id }, req.body, {new:true} )
+           return res.status(200).json({success:true, event: event})
+        } catch (error) {
+            return res.status( 500 ).json({success:false})
+        }
+    },
+    deleteEvent: async( req, res ) => {
+        try {
+            await Events.findOneAndDelete( {_id:req.params.id} )
+            return res.json( {success:true, message:'documento eliminado'} )
         } catch (error) {
             return res.status( 500 ).json({success:false})
         }
